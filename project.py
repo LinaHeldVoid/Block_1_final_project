@@ -11,19 +11,12 @@ import configparser
 from VK_module import VK
 from Ya_Disk_module import Yandex_disk
 
-# __________________________________________________________________________________________________________________
-TOKEN = "___________________________________________"                            # данные для Яндекс Диска
-upload_url = "https://cloud-api.yandex.net/v1/disk/resources/upload"
-folder_url = "https://cloud-api.yandex.net/v1/disk/resources"
 
-
-access_token = '___________________________________________'                     # данные для ВК
-user_id = '_________'
 #_____________________________________________________________________________________________________________________
 
-# тело программы
-vk = VK(access_token, user_id)                                                # получение информации о пользователе
-pprint(vk.users_info())
+# # тело программы
+# vk = VK(access_token, user_id)                                                # получение информации о пользователе
+# pprint(vk.users_info())
 
 #
 
@@ -34,11 +27,11 @@ pprint(vk.users_info())
 #     response = requests.get(url, params={**self.params, **params})
 #     return response.json()
 # _____________________________________________________________________________________________
-pprint(vk.load_ya_disk())                                                    # получение данных о фотографиях, сортировка
-data = vk.load_ya_disk()
-print('\n')
-
-print(vk.write_file())                                                      # запись информации в файл
+# pprint(vk.load_ya_disk())                                                    # получение данных о фотографиях, сортировка
+# data = vk.load_ya_disk()
+# print('\n')
+#
+# print(vk.write_file())                                                      # запись информации в файл
 
 # интерфейс
 greeting = 'Привет! Эта программа умеет переносить фотографии из профиля ВК на Яндекс Диск. Приступим:)'
@@ -51,7 +44,7 @@ while True:
     answer = answer.lower()
     if answer == 'да':
         config = configparser.ConfigParser()
-        config.read("tokens.ini")
+        config.read("TOKENS_DANGER.ini")
         user_id = config['VK']['user_id']
         screen_name = 0
         break

@@ -15,7 +15,7 @@ class Yandex_disk:
 
     def __init__(self, data):
         config = configparser.ConfigParser()
-        config.read("tokens.ini")
+        config.read("TOKENS_DANGER.ini")
         self.token = config['YANDEX']['ya_token']
 
     def get_headers(self):

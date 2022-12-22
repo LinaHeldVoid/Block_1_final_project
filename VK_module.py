@@ -13,7 +13,7 @@ class VK:
 
     def __init__(self, version='5.131'):
         config = configparser.ConfigParser()
-        config.read("tokens.ini")
+        config.read("TOKENS_DANGER.ini")
         self.token = config['VK']['access_token']
         if project.screen_name == 0:
             self.id = config['VK']['user_id']
