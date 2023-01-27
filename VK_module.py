@@ -15,25 +15,31 @@ class VK:
         config = configparser.ConfigParser()
         config.read("TOKENS_DANGER.ini")
         self.token = config['VK']['access_token']
-        if project.screen_name == 0:
-            self.id = config['VK']['user_id']
-        else:
-            self.id = project.screen_name
+        self.screen_name = config['VK']['screen_name']
+        self.id = self.id = config['VK']['user_id']
         self.version = version
         self.params = {'access_token': self.token, 'v': self.version}
-
-    def users_info(self):                                                         # получение информации о пользователе
-        url = 'https://api.vk.com/method/users.get'
-        params = {'user_ids': self.id}
-        response = requests.get(url, params={**self.params, **params})
-        print(self.token)
         print(self.id)
-        return response.json()
+        print(self.screen_name)
+
+    def users_info(self):
+        if self.id == 0:
+            url = 'https://vk.com/dev/utils.resolveScreenName'                                 #получение информации о пользователе
+            params = {'screen name': self.screen_name}
+            response = requests.get(url, params={**self.params, **params})
+            pprint(json.loads(response.text))
+        else:
+            url = 'https://api.vk.com/method/users.get'
+            params = {'user_ids': self.id}
+            response = requests.get(url, params={**self.params, **params})
+        pprint(response.json())
+        return response
 
     def get_photos_data(self, owner_id, token, version='5.131', offset=0):          # получение информации о фото из ВК
+        pprint(self.users_info())
         self.id = owner_id
+        print(owner_id)
         self.token = token
-        self.version = version
         url = 'https://api.vk.com/method/photos.get'
         params = {'owner_id': self.id,
                   'album_id': 'profile',
@@ -48,7 +54,8 @@ class VK:
         return json.loads(response.text)
 
     def load_ya_disk(self):
-        data = self.get_photos_data(self.id, self.token, version='5.131')
+        data = self.get_photos_data(self.id, self.token)
+        print(data)
         count_foto = data['response']['count']
         i = 0
         photos = []
