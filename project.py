@@ -46,8 +46,9 @@ result = vk.users_info()
 pprint(result)
 #
 #
-pprint(vk.load_ya_disk())                                                 # получение данных о фотографиях, сортировка
+                                                # получение данных о фотографиях, сортировка
 data = vk.load_ya_disk()
+pprint(data)
 print('\n')
 #
 print(vk.write_file())                                                      # запись информации в файл

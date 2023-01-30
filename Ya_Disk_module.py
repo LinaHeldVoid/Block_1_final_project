@@ -41,7 +41,6 @@ class Yandex_disk:
               upload_link = f'{upload_url}?path=Фото/{name}'
               get_link_params = {'path': f'{name}', 'overwrite': 'true'}
               url = photos[1]['url']
-
               params_upload = {'path': name, 'url': url}
               response = requests.post(url=upload_link, params=params_upload, headers=headers)
               bar.next()

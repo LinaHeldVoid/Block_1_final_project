@@ -15,30 +15,30 @@ class VK:
         config = configparser.ConfigParser()
         config.read("TOKENS_DANGER.ini")
         self.token = config['VK']['access_token']
-        self.screen_name = config['VK']['screen_name']
-        self.id = self.id = config['VK']['user_id']
+        self.id = config['VK']['user_id']
         self.version = version
         self.params = {'access_token': self.token, 'v': self.version}
-        print(self.id)
-        print(self.screen_name)
+        self.data_point = self.id.isdigit()
 
-    def users_info(self):
-        if self.id == 0:
-            url = 'https://vk.com/dev/utils.resolveScreenName'                                 #получение информации о пользователе
-            params = {'screen name': self.screen_name}
-            response = requests.get(url, params={**self.params, **params})
-            pprint(json.loads(response.text))
-        else:
-            url = 'https://api.vk.com/method/users.get'
+    def users_info(self):                                                             # получение информации о пользователе
+        if self.data_point == 0:
+            url = 'https://api.vk.com/method/users.get'                                 # с помощью screen_name
             params = {'user_ids': self.id}
             response = requests.get(url, params={**self.params, **params})
-        pprint(response.json())
+            id_data = json.loads(response.text)
+            pprint(id_data)
+            self.id = id_data['response'][0]['id']
+        else:
+            url = 'https://api.vk.com/method/users.get'                                 # с помощью id
+            params = {'user_ids': self.id}
+            response = requests.get(url, params={**self.params, **params})
+        for_print = f'{json.loads(response.text)}'
+        pprint(for_print)
         return response
 
     def get_photos_data(self, owner_id, token, version='5.131', offset=0):          # получение информации о фото из ВК
         pprint(self.users_info())
         self.id = owner_id
-        print(owner_id)
         self.token = token
         url = 'https://api.vk.com/method/photos.get'
         params = {'owner_id': self.id,
@@ -55,7 +55,6 @@ class VK:
 
     def load_ya_disk(self):
         data = self.get_photos_data(self.id, self.token)
-        print(data)
         count_foto = data['response']['count']
         i = 0
         photos = []
@@ -69,6 +68,7 @@ class VK:
         photos.sort(reverse=1)                                                # n самых больших фото по высоте
         photo_amount = project.photo_amount
         photos_for_load = nlargest(photo_amount, photos)
+        print(photos_for_load)
         load_pics = []
 
         fin_file = {}
