@@ -1,57 +1,28 @@
-from heapq import nlargest
 from pprint import pprint
-from progress.bar import IncrementalBar
-import requests
-import json
-import os
 import time
-from heapq import nlargest
-import project
-import configparser
 from VK_module import VK
 from Ya_Disk_module import Yandex_disk
 
 
-#_____________________________________________________________________________________________________________________
+def main():
+    greeting = 'Привет! Эта программа умеет переносить фотографии из профиля ВК на Яндекс Диск. Приступим:)'
+    print(greeting)
+    time.sleep(1)
 
-# # тело программы
-# vk = VK(access_token, user_id)                                                # получение информации о пользователе
-# pprint(vk.users_info())
+    photo_amount = int(input('Cколько фото ты хочешь загрузить со страницы (напиши число)? '))
+    vk = VK()
+    result = vk.users_info()
+    pprint(result)
 
-#
+    data = vk.load_ya_disk(photo_amount)                # получение данных о фотографиях, сортировка
+    pprint(data)
+    print('\n')
 
-# def get_user_id():
-#     url = 'https://api.vk.com/method/users.get'
-#     token_vk = get_token()
-#     params = {'access_token': token_vk, 'user_ids': screen_name}
-#     response = requests.get(url, params={**self.params, **params})
-#     return response.json()
-# _____________________________________________________________________________________________
-# pprint(vk.load_ya_disk())                                                    # получение данных о фотографиях, сортировка
-# data = vk.load_ya_disk()
-# print('\n')
-#
-# print(vk.write_file())                                                      # запись информации в файл
+    vk.write_file(photo_amount)                                        # запись информации в файл
 
-# интерфейс
-greeting = 'Привет! Эта программа умеет переносить фотографии из профиля ВК на Яндекс Диск. Приступим:)'
-print(greeting)
-time.sleep(1)
+    ya = Yandex_disk()                                               # загрузка на Яндекс Диск
+    print(ya.upload_url_to_disk(data))
 
-photo_amount = int(input('Cколько фото ты хочешь загрузить со страницы (напиши число)? '))
 
-#тело программы                                               # получение информации о пользователе
-vk = VK()
-result = vk.users_info()
-pprint(result)
-#
-#
-                                                # получение данных о фотографиях, сортировка
-data = vk.load_ya_disk()
-pprint(data)
-print('\n')
-#
-print(vk.write_file())                                                      # запись информации в файл
-#
-ya = Yandex_disk(data)                                                       # загрузка на Яндекс Диск
-print(ya.upload_url_to_disk(data))
+if __name__ == "__main__":
+    main()
